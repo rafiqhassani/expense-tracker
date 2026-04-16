@@ -11,7 +11,6 @@
       <div class="add-update">
         <input type="text" id="title" placeholder="Add Expense" />
         <input type="number" id="amount" placeholder="Add Amount" />
-
         <button type="button" id="add">Add/Update</button>
         <button type="button" id="categoryBtn" class="category-btn">
           Show Category Input
@@ -48,6 +47,7 @@
         <input type="number" id="searchAmount" placeholder="Search Amount" />
         <button type="button" id="searchBtn">Search Expenses</button>
       </div>
+
       <div class="sortExpenses">
         <select id="sortSelection">
           <option value="smallest">Amount: Smallest &#8594; Largest</option>
@@ -58,18 +58,18 @@
       </div>
       <div id="container"></div>
     </div>
+
     <div id="monthlyTotal"></div>
     <div id="total"></div>
-
     <button type="button" id="clearAll">Clear All</button>
     <button type="button" id="clearChecked">Clear Checked Expenses</button>
+
     <div id="modalContainer" class="modal">
       <div class="modal-content">
         <span id="closeModal" class="close">&times;</span>
         <p id="modalMsg"></p>
       </div>
     </div>
-
     <script type="module" src="app.js"></script>
   </body>
 </html>

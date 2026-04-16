@@ -47,7 +47,6 @@ const elements = {
   categorySelection: document.getElementById("categorySelection"),
   filterByMonth: document.getElementById("filterByMonth"),
   monthlyTotal: document.getElementById("monthlyTotal"),
-
   totalAmount: document.getElementById("total"),
   clearAll: document.getElementById("clearAll"),
   modalContainer: document.getElementById("modalContainer"),
@@ -55,12 +54,12 @@ const elements = {
   closeModal: document.getElementById("closeModal"),
   clearChecked: document.getElementById("clearChecked"),
 };
-
 let titleValue;
 let amountRaw;
 let categoryValue;
 let dateValue;
 let editingId = null;
+
 function setupEvents() {
   elements.addBtn.addEventListener("click", () => {
     if (editingId) {
@@ -69,7 +68,6 @@ function setupEvents() {
       handleAddExpense();
     }
   });
-
   elements.categoryBtn.addEventListener("click", () => {
     elements.categoryInput.classList.toggle("category");
   });
@@ -88,7 +86,6 @@ function setupEvents() {
   });
   elements.clearAll.addEventListener("click", () => {
     expenses = clearAllExpenses();
-
     handleRenderExpenses();
     handleCategoryOptions();
   });
@@ -100,14 +97,11 @@ function setupEvents() {
   });
   elements.container.addEventListener("click", (e) => {
     const button = e.target.closest("button");
-
     if (!button) return;
     const id = Number(button.dataset.id);
-
     if (button.classList.contains("delete-btn")) {
       handleDeleteExpense(id);
     }
-
     if (button.classList.contains("edit-btn")) {
       handleEditExpense(id);
     }
@@ -128,14 +122,13 @@ function setupEvents() {
     handleFilterByMonth();
   });
 }
+
 function handleRenderExpenses(data = expenses) {
   elements.container.textContent = "";
-
   data.forEach((exp) => {
     const divElement = renderExpenses(exp);
     elements.container.appendChild(divElement);
   });
-
   handleTotalCalcule(data);
 }
 
@@ -157,12 +150,10 @@ function handleAddExpense() {
   }
   const expense = createExpense(rawValues);
   expenses = addExpense(expenses, expense);
-
   saveToLocalStorage("expenses", expenses);
   handleRenderExpenses();
   handleCategoryOptions();
   clearInputs();
-
   showModal("Expense added successfully!");
 }
 
@@ -178,7 +169,6 @@ function validateExpense(data) {
       message: "Please fill fields correctly!",
     };
   }
-
   if (isNaN(parseFloat(data.amount)) || parseFloat(data.amount) <= 0) {
     return {
       valid: false,
@@ -203,15 +193,12 @@ function handleDeleteExpense(id) {
 
 function handleEditExpense(id) {
   editingId = id;
-
   const item = editExpense(expenses, id);
   if (!item) return;
-
   elements.titleInput.value = item.title.trim();
   elements.amountInput.value = item.amount;
   elements.categoryInput.value = item.category.trim();
   elements.dateInput.value = new Date(item.date).toISOString().split("T")[0];
-
   if (
     [...elements.categorySelection.options].some(
       (option) => option.value === item.category,
@@ -230,11 +217,11 @@ function clearInputs() {
 
 function handleCheckboxChange(id, isChecked) {
   expenses = checkboxChange(expenses, id, isChecked);
-
   saveToLocalStorage("expenses", expenses);
   handleRenderExpenses();
   handleCategoryOptions();
 }
+
 function handleUpdateExpense() {
   if (editingId === null) {
     return;
@@ -250,7 +237,6 @@ function handleUpdateExpense() {
     showModal(validation.message);
     return;
   }
-
   const formattedData = createExpense(newData);
   expenses = updateExpense(expenses, editingId, formattedData);
   if (!expenses.length) return;
@@ -258,7 +244,6 @@ function handleUpdateExpense() {
   handleSortExpenses();
   editingId = null;
   clearInputs();
-
   showModal("Expense updated successfully!");
 }
 
@@ -273,9 +258,7 @@ function handleSearchExpenses() {
     handleRenderExpenses();
     return;
   }
-
   let filteredExpenses = searchExpenses(expenses, titleSearch, amountSearch);
-
   if (filteredExpenses.length === 0) {
     elements.container.innerHTML = "<p>No resuts found</p>";
   } else {
@@ -284,6 +267,7 @@ function handleSearchExpenses() {
     handleTotalCalcule(filteredExpenses);
   }
 }
+
 function handleSortExpenses() {
   const sortBy = elements.sortSelection.value;
   const sortedExpenses = sortExpenses(expenses, sortBy);
@@ -297,19 +281,19 @@ function handleSelectCategories() {
       ? expenses
       : selectCategories(expenses, selectedCategory);
   handleRenderExpenses(filteredExpenses);
-
   handleMonthlyTotal(filteredExpenses);
   handleTotalCalcule(filteredExpenses);
 }
+
 function handleFilterByMonth(data = expenses) {
   const selectedMonth = Number(elements.filterByMonth.value);
   const filteredExpenses =
     selectedMonth === "all" ? data : filterByMonth(data, selectedMonth);
   const totalByMonth = calculateByDate(filteredExpenses);
   elements.monthlyTotal.textContent = "Total Monthly: " + totalByMonth;
-
   handleRenderExpenses(filteredExpenses);
 }
+
 function showModal(message) {
   elements.modalMsg.textContent = message;
   elements.modalContainer.classList.add("show");
@@ -317,11 +301,13 @@ function showModal(message) {
     elements.modalContainer.classList.remove("show");
   }, 3000);
 }
+
 function createUniqueCategories() {
   const allCategories = extractCategories(expenses);
   const categoriesArray = ["All", ...new Set(allCategories)];
   return categoriesArray;
 }
+
 function handleCategoryOptions(data = expenses) {
   const categories = createUniqueCategories(data);
   elements.categorySelection.textContent = "";
@@ -330,6 +316,7 @@ function handleCategoryOptions(data = expenses) {
     elements.categorySelection.appendChild(selectOptions);
   });
 }
+
 function handleTotalCalcule(data = expenses) {
   const total = totalCalculate(data);
   elements.totalAmount.textContent = "Total Amount: " + total;

@@ -16,12 +16,14 @@ export function createExpense(data) {
     selected: false,
   };
 }
+
 export function filterByMonth(expenses, month) {
   return expenses.filter((item) => {
     const d = new Date(item.date);
     return d.getMonth() + 1 === month;
   });
 }
+
 export function calculateByDate(expenses) {
   return expenses.reduce((sum, item) => sum + item.amount, 0);
 }
@@ -33,6 +35,7 @@ export function deleteExpense(expenses, id) {
 export function editExpense(expenses, id) {
   return expenses.find((item) => item.id === id);
 }
+
 export function checkboxChange(expenses, id, isChecked) {
   return expenses.map((item) =>
     item.id === id ? { ...item, selected: isChecked } : item,
@@ -73,9 +76,9 @@ export function sortExpenses(expenses, sortBy) {
   } else if (sortBy === "title-descending") {
     sorted.sort((a, b) => b.title.localeCompare(a.title));
   }
-
   return sorted;
 }
+
 export function selectCategories(expenses, selectedCategory) {
   return expenses.filter((item) => item.category === selectedCategory);
 }
