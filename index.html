@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expence Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="add-update">
+        <input type="text" id="title" placeholder="Add Expense" />
+        <input type="number" id="amount" placeholder="Add Amount" />
+
+        <button type="button" id="add">Add/Update</button>
+        <button type="button" id="categoryBtn" class="category-btn">
+          Show Category Input
+        </button>
+        <input
+          type="text"
+          id="category"
+          class="category"
+          placeholder="Add category"
+        />
+        <input type="date" id="dateInput" />
+        <label for="categorySelection">Select Category: </label>
+        <select id="categorySelection"></select>
+        <label for="filterByMonth">Filter by month</label>
+        <select id="filterByMonth">
+          <option value="all">All Months</option>
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+      </div>
+
+      <div class="search-expenses">
+        <input type="text" id="searchExpenses" placeholder="Search Expenses" />
+        <input type="number" id="searchAmount" placeholder="Search Amount" />
+        <button type="button" id="searchBtn">Search Expenses</button>
+      </div>
+      <div class="sortExpenses">
+        <select id="sortSelection">
+          <option value="smallest">Amount: Smallest &#8594; Largest</option>
+          <option value="largest">Amount: Largest &#8594; Smallest</option>
+          <option value="title-ascending">Title: A &#8594; Z</option>
+          <option value="title-descending">Title: Z &#8594; A</option>
+        </select>
+      </div>
+      <div id="container"></div>
+    </div>
+    <div id="monthlyTotal"></div>
+    <div id="total"></div>
+
+    <button type="button" id="clearAll">Clear All</button>
+    <button type="button" id="clearChecked">Clear Checked Expenses</button>
+    <div id="modalContainer" class="modal">
+      <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <p id="modalMsg"></p>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

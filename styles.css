@@ -1,0 +1,54 @@
+.main-container {
+  width: 60%;
+  margin: 40px auto;
+  text-align: center;
+  padding: 20px;
+  line-height: 1.5;
+  padding: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#categoryBtn {
+  margin:
+    0,
+    20px,
+    0 20px;
+}
+.add-update {
+  width: 100%;
+
+  margin: 0 auto 10px;
+}
+.search-expenses {
+  width: 100%;
+  margin: 0 auto 10px;
+}
+.sortExpenses {
+  width: 100%;
+  margin: 0 auto 10px;
+}
+.expensive {
+  background-color: #ffcccc;
+  font-weight: bold;
+}
+.category {
+  display: none;
+}
+
+.modal {
+  display: none;
+}
+.modal.show {
+  display: block;
+}
+.close {
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover {
+  color: #000;
+}
