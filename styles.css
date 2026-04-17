@@ -1,36 +1,106 @@
+body {
+  background-color: #f5f7fb;
+}
+
 .main-container {
-  width: 60%;
-  margin: 40px auto;
+  margin: 40px;
   text-align: center;
   padding: 20px;
   line-height: 1.5;
-  padding: 0 auto;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 20px;
+  background-color: #ffffff;
 }
-#categoryBtn {
-  margin:
-    0,
-    20px,
-    0 20px;
-}
-.add-update {
-  width: 100%;
 
-  margin: 0 auto 10px;
-}
-.search-expenses {
+.add-update,
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   width: 100%;
-  margin: 0 auto 10px;
 }
-.sortExpenses {
+input,
+select {
   width: 100%;
-  margin: 0 auto 10px;
+  padding: 8px 10px;
+  height: 40px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+button {
+  padding: 8px 12px;
+  height: 40px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+label {
+  text-align: left;
+  font-weight: 600;
+}
+.delete-btn,
+.edit-btn,
+.cancel-btn {
+  width: auto;
+  padding: 6px 10px;
+  gap: 6px;
+}
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  gap: 12px;
+}
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.info-container h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.meta-info {
+  font-size: 13px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.meta-info .dot {
+  font-size: 14px;
+  opacity: 0.6;
+  font-weight: bold;
+}
+.action-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.select-expense {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+.amount {
+  background-color: pink;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
 }
 .expensive {
   background-color: #ffcccc;
+
+  border-radius: 6px;
+}
+.expensive .amount {
   font-weight: bold;
 }
 .category {
@@ -51,4 +121,16 @@
 }
 .close:hover {
   color: #000;
+}
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-top: 1px solid #eee;
+}
+#total {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
 }

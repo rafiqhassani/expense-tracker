@@ -20,7 +20,7 @@ import {
   createCategoryOptions,
   clearAllExpenses,
 } from "./ui.js";
-console.log("App is running...");
+
 let expenses = getFromLocalStorage("expenses") || [];
 try {
   const storedExpenses = getFromLocalStorage("expenses");
