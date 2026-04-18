@@ -27,7 +27,7 @@
           Show Category Input
         </button>
 
-        <label for="categorySelection">Select Category: </label>
+        <label for="categorySelection">Select Category </label>
         <select id="categorySelection"></select>
       </section>
 
@@ -54,7 +54,7 @@
           <option value="11">November</option>
           <option value="12">December</option>
         </select>
-
+        <label for="sortSelection">Sort by </label>
         <select id="sortSelection">
           <option value="smallest">Amount: Smallest &#8594; Largest</option>
           <option value="largest">Amount: Largest &#8594; Smallest</option>
@@ -64,10 +64,10 @@
       </section>
       <div id="monthlyTotal"></div>
 
-      <div id="modalContainer" class="modal" role="status" aria-live="polite">
+      <div id="modalContainer" class="modal" role="dialog" aria-live="polite">
         <div class="modal-content">
-          <span id="closeModal" class="close">&times;</span>
-          <p id="modalMsg"></p>
+          <p id="modalMsg" class="message-text"></p>
+          <button type="button" id="closeModal" class="close">X</button>
         </div>
       </div>
 
@@ -76,7 +76,7 @@
       <button type="button" id="clearChecked">Clear Checked Expenses</button>
     </div>
     <footer>
-      <div id="total"></div>
+      <div id="totalAmount"></div>
       <button type="button" id="clearAll">Clear All</button>
     </footer>
 

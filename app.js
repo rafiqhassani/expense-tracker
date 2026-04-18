@@ -47,7 +47,7 @@ const elements = {
   categorySelection: document.getElementById("categorySelection"),
   filterByMonth: document.getElementById("filterByMonth"),
   monthlyTotal: document.getElementById("monthlyTotal"),
-  totalAmount: document.getElementById("total"),
+  totalAmount: document.getElementById("totalAmount"),
   clearAll: document.getElementById("clearAll"),
   modalContainer: document.getElementById("modalContainer"),
   modalMsg: document.getElementById("modalMsg"),
