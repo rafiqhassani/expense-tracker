@@ -142,13 +142,10 @@ function validateInputs() {
 let editingId = null;
 
 function handleAddUpdateBtn() {
-  console.log("SUBMIT FIRED");
   if (!validateInputs()) return;
   if (editingId === null) {
-    console.log("ADD MODE");
     handleAddExpense();
   } else {
-    console.log("UPDATE MODE");
     handleUpdateExpense();
   }
   clearInputs();
