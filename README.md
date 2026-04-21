@@ -1,5 +1,3 @@
-:
-
 📊 Expense Tracker Project
 
 🚀 About the Project
