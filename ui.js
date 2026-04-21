@@ -17,7 +17,7 @@ export function renderExpenses(expense) {
   dotSpan.textContent = " . ";
   dotSpan.classList.add("dot");
   const dateSpan = document.createElement("span");
-  dateSpan.textContent = new Date(expense.date).toLocaleDateString();
+  dateSpan.textContent = new Date(expense.date).toLocaleDateString("en-GB");
 
   metaElements.appendChild(categorySpan);
   metaElements.appendChild(dotSpan);
@@ -26,20 +26,20 @@ export function renderExpenses(expense) {
   const actionContainer = document.createElement("div");
   actionContainer.classList.add("action-container");
   const amount = document.createElement("span");
-  amount.textContent = `${expense.amount.toFixed(2)}`;
+  amount.textContent = `Rs ${expense.amount}`;
   amount.classList.add("amount");
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "X";
-  deleteBtn.classList.add("delete-btn", "group");
+  deleteBtn.classList.add("delete-btn");
   deleteBtn.dataset.id = expense.id;
   const cancelBtn = document.createElement("button");
   cancelBtn.textContent = "Cancel";
-  cancelBtn.classList.add("cancel-btn", "group");
+  cancelBtn.classList.add("cancel-btn");
   cancelBtn.dataset.id = expense.id;
   const editBtn = document.createElement("button");
   editBtn.textContent = "Edit";
   editBtn.dataset.id = expense.id;
-  editBtn.classList.add("edit-btn", "group");
+  editBtn.classList.add("edit-btn");
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.classList.add("select-expense");
@@ -55,13 +55,6 @@ export function renderExpenses(expense) {
   div.appendChild(infoContainer);
   div.appendChild(actionContainer);
   return div;
-}
-
-export function createCategoryOptions(category) {
-  const option = document.createElement("option");
-  option.value = category;
-  option.textContent = category;
-  return option;
 }
 
 export function clearAllExpenses() {

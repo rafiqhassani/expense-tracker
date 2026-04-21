@@ -7,7 +7,6 @@ import {
   searchExpenses,
   sortExpenses,
   selectCategories,
-  extractCategories,
   checkboxChange,
   clearCheckedButtons,
   createExpense,
@@ -15,28 +14,24 @@ import {
   calculateByDate,
 } from "./expense.js";
 import { saveToLocalStorage, getFromLocalStorage } from "./storage.js";
-import {
-  renderExpenses,
-  createCategoryOptions,
-  clearAllExpenses,
-} from "./ui.js";
+import { renderExpenses, clearAllExpenses } from "./ui.js";
+let expenses = [];
 
-let expenses = getFromLocalStorage("expenses") || [];
 try {
-  const storedExpenses = getFromLocalStorage("expenses");
-  expenses = storedExpenses || [];
+  const stored = getFromLocalStorage("expenses") || [];
+  expenses = stored.map((item) => ({
+    ...item,
+    selected: typeof item.selected === "boolean" ? item.selected : false,
+  }));
 } catch (error) {
-  console.error(
-    "Error occurred while fetching expenses from localStorage:",
-    error,
-  );
+  console.error("Error loading expenses:", error);
   expenses = [];
 }
 const elements = {
   titleInput: document.getElementById("title"),
   amountInput: document.getElementById("amount"),
   categoryInput: document.getElementById("category"),
-  addBtn: document.getElementById("add"),
+  addBtn: document.getElementById("addBtn"),
   categoryBtn: document.getElementById("categoryBtn"),
   dateInput: document.getElementById("dateInput"),
   container: document.getElementById("container"),
@@ -54,160 +49,146 @@ const elements = {
   closeModal: document.getElementById("closeModal"),
   clearChecked: document.getElementById("clearChecked"),
 };
-let titleValue;
-let amountRaw;
-let categoryValue;
-let dateValue;
-let editingId = null;
 
-function setupEvents() {
-  elements.addBtn.addEventListener("click", () => {
-    if (editingId) {
-      handleUpdateExpense();
-    } else {
-      handleAddExpense();
-    }
-  });
-  elements.categoryBtn.addEventListener("click", () => {
-    elements.categoryInput.classList.toggle("category");
-  });
-  elements.searchBtn.addEventListener("click", handleSearchExpenses);
-  elements.sortSelection.addEventListener("change", handleSortExpenses);
-  elements.categorySelection.addEventListener("change", () => {
-    handleSelectCategories();
-  });
-  elements.closeModal.addEventListener("click", () => {
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#addBtn")) {
+    handleAddUpdateBtn();
+  }
+  if (e.target.closest("#searchBtn")) {
+    handleSearchExpenses();
+  }
+  if (e.target.closest("#closeModal")) {
     elements.modalContainer.classList.remove("show");
-  });
-  window.addEventListener("click", (e) => {
-    if (e.target === elements.modalContainer) {
-      elements.modalContainer.classList.remove("show");
-    }
-  });
-  elements.clearAll.addEventListener("click", () => {
+  }
+  if (e.target === elements.modalContainer) {
+    elements.modalContainer.classList.remove("show");
+  }
+  if (e.target.closest("#clearAll")) {
     expenses = clearAllExpenses();
     handleRenderExpenses();
-    handleCategoryOptions();
-  });
-  elements.clearChecked.addEventListener("click", () => {
+  }
+  if (e.target.closest("#clearChecked")) {
     expenses = clearCheckedButtons(expenses);
     saveToLocalStorage("expenses", expenses);
     handleRenderExpenses();
-    handleCategoryOptions();
-  });
-  elements.container.addEventListener("click", (e) => {
-    const button = e.target.closest("button");
-    if (!button) return;
-    const id = Number(button.dataset.id);
-    if (button.classList.contains("delete-btn")) {
-      handleDeleteExpense(id);
-    }
-    if (button.classList.contains("edit-btn")) {
-      handleEditExpense(id);
-    }
-    if (button.classList.contains("cancel-btn")) {
-      clearInputs();
-    }
-  });
-  elements.container.addEventListener("change", (e) => {
-    const checkbox = e.target.closest("input[type='checkbox']");
-    if (!checkbox) return;
-    const id = Number(checkbox.dataset.id);
-    const isChecked = checkbox.checked;
-    if (checkbox.classList.contains("select-expense")) {
-      handleCheckboxChange(id, isChecked);
-    }
-  });
-  elements.filterByMonth.addEventListener("change", () => {
+  }
+});
+elements.container.addEventListener("click", (e) => {
+  const button = e.target.closest("button");
+  if (!button) return;
+  const id = button.dataset.id;
+  if (button.classList.contains("delete-btn")) {
+    handleDeleteExpense(id);
+  }
+  if (button.classList.contains("edit-btn")) {
+    handleEditExpense(id);
+  }
+  if (button.classList.contains("cancel-btn")) {
+    clearInputs();
+  }
+});
+document.addEventListener("change", (e) => {
+  if (e.target === elements.sortSelection) {
+    handleSortExpenses();
+  }
+  if (e.target === elements.categorySelection) {
+    handleSelectCategories();
+  }
+  if (e.target === elements.filterByMonth) {
     handleFilterByMonth();
-  });
-}
+  }
+});
+
+elements.container.addEventListener("change", (e) => {
+  const checkbox = e.target.closest("input[type='checkbox']");
+  if (!checkbox) return;
+  const id = checkbox.dataset.id;
+  const isChecked = checkbox.checked;
+  if (checkbox.classList.contains("select-expense")) {
+    handleCheckboxChange(id, isChecked);
+  }
+});
 
 function handleRenderExpenses(data = expenses) {
   elements.container.textContent = "";
+
   data.forEach((exp) => {
     const divElement = renderExpenses(exp);
     elements.container.appendChild(divElement);
   });
+
   handleTotalCalcule(data);
 }
-
-function handleAddExpense() {
-  titleValue = elements.titleInput.value.trim();
-  amountRaw = elements.amountInput.value.trim();
-  categoryValue = elements.categoryInput.value.trim();
-  dateValue = elements.dateInput.value;
-  const rawValues = {
-    title: titleValue,
-    amount: amountRaw,
-    category: categoryValue,
-    date: dateValue,
-  };
-  const validation = validateExpense(rawValues);
-  if (!validation.valid) {
-    showModal(validation.message);
-    return;
-  }
-  const expense = createExpense(rawValues);
-  expenses = addExpense(expenses, expense);
-  saveToLocalStorage("expenses", expenses);
-  handleRenderExpenses();
-  handleCategoryOptions();
-  clearInputs();
-  showModal("Expense added successfully!");
-}
-
-function validateExpense(data) {
+function validateInputs() {
   if (
-    data.title.trim() === "" ||
-    data.amount.trim() === "" ||
-    data.category.trim() === "" ||
-    data.date === ""
+    elements.titleInput.value.trim() === "" ||
+    elements.amountInput.value.trim() === "" ||
+    elements.categoryInput.value.trim() === "" ||
+    elements.dateInput.value.trim() === ""
   ) {
-    return {
-      valid: false,
-      message: "Please fill fields correctly!",
-    };
+    showModal("Please fill in all fields correctly!");
+    return false;
   }
-  if (isNaN(parseFloat(data.amount)) || parseFloat(data.amount) <= 0) {
-    return {
-      valid: false,
-      message: "Amount must be a valid positive number!",
-    };
+
+  const amount = parseFloat(elements.amountInput.value);
+
+  if (isNaN(amount) || amount <= 0) {
+    showModal("Amount must be a valid number!");
+    return false;
   }
-  if (!data.date || isNaN(new Date(data.date).getTime())) {
-    return {
-      valid: false,
-      message: "Please select a valid date!",
-    };
+
+  return true;
+}
+let editingId = null;
+
+function handleAddUpdateBtn() {
+  console.log("SUBMIT FIRED");
+  if (!validateInputs()) return;
+  if (editingId === null) {
+    console.log("ADD MODE");
+    handleAddExpense();
+  } else {
+    console.log("UPDATE MODE");
+    handleUpdateExpense();
   }
-  return { valid: true };
+  clearInputs();
+  editingId = null;
+}
+function handleAddExpense() {
+  const userInput = {
+    title: elements.titleInput.value,
+    amount: elements.amountInput.value,
+    category: elements.categoryInput.value,
+    date: elements.dateInput.value,
+  };
+
+  const processedData = createExpense(userInput);
+
+  expenses = addExpense(expenses, processedData);
+  saveToLocalStorage("expenses", expenses);
+
+  handleRenderExpenses();
+
+  showModal("Expense added!");
 }
 
 function handleDeleteExpense(id) {
   expenses = deleteExpense(expenses, id);
   saveToLocalStorage("expenses", expenses);
   handleRenderExpenses();
-  handleCategoryOptions();
 }
 
 function handleEditExpense(id) {
   editingId = id;
+
   const item = editExpense(expenses, id);
   if (!item) return;
-  elements.titleInput.value = item.title.trim();
-  elements.amountInput.value = item.amount;
-  elements.categoryInput.value = item.category.trim();
-  elements.dateInput.value = new Date(item.date).toISOString().split("T")[0];
-  if (
-    [...elements.categorySelection.options].some(
-      (option) => option.value === item.category,
-    )
-  ) {
-    elements.categorySelection.value = item.category;
-  }
-}
 
+  elements.titleInput.value = item.title || "";
+  elements.amountInput.value = isNaN(item.amount) ? "" : item.amount;
+  elements.categoryInput.value = item.category || "";
+  elements.dateInput.value = item.date || "";
+}
 function clearInputs() {
   elements.titleInput.value = "";
   elements.amountInput.value = "";
@@ -219,34 +200,23 @@ function handleCheckboxChange(id, isChecked) {
   expenses = checkboxChange(expenses, id, isChecked);
   saveToLocalStorage("expenses", expenses);
   handleRenderExpenses();
-  handleCategoryOptions();
 }
-
 function handleUpdateExpense() {
-  if (editingId === null) {
-    return;
-  }
-  const newData = {
-    title: elements.titleInput.value.trim(),
-    amount: elements.amountInput.value.trim(),
-    category: elements.categoryInput.value.trim(),
+  if (editingId === null) return;
+  const userInput = {
+    title: elements.titleInput.value,
+    amount: elements.amountInput.value,
+    category: elements.categoryInput.value,
     date: elements.dateInput.value,
   };
-  const validation = validateExpense(newData);
-  if (!validation.valid) {
-    showModal(validation.message);
-    return;
-  }
-  const formattedData = createExpense(newData);
-  expenses = updateExpense(expenses, editingId, formattedData);
-  if (!expenses.length) return;
+  const processedData = createExpense(userInput, editingId, false);
+  expenses = updateExpense(expenses, editingId, processedData);
   saveToLocalStorage("expenses", expenses);
-  handleSortExpenses();
-  editingId = null;
-  clearInputs();
-  showModal("Expense updated successfully!");
-}
+  handleRenderExpenses();
 
+  editingId = null;
+  showModal("Expense updated!");
+}
 function handleSearchExpenses() {
   let titleSearch = elements.searchTitle.value.toLowerCase().trim();
   let amountSearch =
@@ -263,8 +233,6 @@ function handleSearchExpenses() {
     elements.container.innerHTML = "<p>No resuts found</p>";
   } else {
     handleRenderExpenses(filteredExpenses);
-    handleMonthlyTotal(filteredExpenses);
-    handleTotalCalcule(filteredExpenses);
   }
 }
 
@@ -276,21 +244,22 @@ function handleSortExpenses() {
 
 function handleSelectCategories() {
   const selectedCategory = elements.categorySelection.value;
+
   const filteredExpenses =
-    selectedCategory === "All"
+    selectedCategory === "all"
       ? expenses
       : selectCategories(expenses, selectedCategory);
   handleRenderExpenses(filteredExpenses);
-  handleMonthlyTotal(filteredExpenses);
-  handleTotalCalcule(filteredExpenses);
 }
 
-function handleFilterByMonth(data = expenses) {
-  const selectedMonth = Number(elements.filterByMonth.value);
+function handleFilterByMonth() {
+  const selectedMonth = elements.filterByMonth.value.trim().toLowerCase();
   const filteredExpenses =
-    selectedMonth === "all" ? data : filterByMonth(data, selectedMonth);
+    selectedMonth === "all"
+      ? expenses
+      : filterByMonth(expenses, Number(selectedMonth));
   const totalByMonth = calculateByDate(filteredExpenses);
-  elements.monthlyTotal.textContent = "Total Monthly: " + totalByMonth;
+  elements.monthlyTotal.textContent = totalByMonth;
   handleRenderExpenses(filteredExpenses);
 }
 
@@ -298,31 +267,16 @@ function showModal(message) {
   elements.modalMsg.textContent = message;
   elements.modalContainer.classList.add("show");
   setTimeout(() => {
+    elements.modalMsg.textContent = "";
     elements.modalContainer.classList.remove("show");
   }, 3000);
 }
 
-function createUniqueCategories() {
-  const allCategories = extractCategories(expenses);
-  const categoriesArray = ["All", ...new Set(allCategories)];
-  return categoriesArray;
-}
-
-function handleCategoryOptions(data = expenses) {
-  const categories = createUniqueCategories(data);
-  elements.categorySelection.textContent = "";
-  categories.forEach((category) => {
-    const selectOptions = createCategoryOptions(category);
-    elements.categorySelection.appendChild(selectOptions);
-  });
-}
-
 function handleTotalCalcule(data = expenses) {
   const total = totalCalculate(data);
-  elements.totalAmount.textContent = "Total Amount: " + total;
+  elements.totalAmount.textContent = total;
 }
 
 getFromLocalStorage("expenses");
+
 handleRenderExpenses();
-setupEvents();
-handleCategoryOptions();

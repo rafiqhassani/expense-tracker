@@ -3,8 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Expence Tracker</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="main-container">
@@ -14,21 +18,33 @@
         <input type="text" id="title" placeholder="Add Expense" />
         <label for="amount">Amount</label>
         <input type="number" id="amount" placeholder="e.g. 100.00" />
+        <label for="category">Category</label>
         <input
           type="text"
           id="category"
-          class="category"
+          class="category-input"
           placeholder="Add category"
         />
         <label for="dateInput">Date</label>
         <input type="date" id="dateInput" />
-        <button type="button" id="add">Add/Update</button>
-        <button type="button" id="categoryBtn" class="category-btn">
-          Show Category Input
-        </button>
-
+        <button type="button" id="addBtn">Add/Update</button>
         <label for="categorySelection">Select Category </label>
-        <select id="categorySelection"></select>
+        <select id="categorySelection">
+          <option value="all">All Categories</option>
+          <option value="food">Food</option>
+          <option value="transportation">Transportation</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="health">Health</option>
+          <option value="bills">Bills</option>
+          <option value="shopping">Shopping</option>
+          <option value="education">Education</option>
+          <option value="travel">Travel</option>
+          <option value="rent">Rent</option>
+          <option value="utilities">Utilities (electricity, water, gas)</option>
+          <option value="salary">Salary / Income</option>
+          <option value="savings">Savings</option>
+          <option value="others">Others</option>
+        </select>
       </section>
 
       <section class="filter">
@@ -62,7 +78,9 @@
           <option value="title-descending">Title: Z &#8594; A</option>
         </select>
       </section>
-      <div id="monthlyTotal"></div>
+      <div class="summary">
+        <h3>Monthly Total: <span id="monthlyTotal">0</span></h3>
+      </div>
 
       <div id="modalContainer" class="modal" role="dialog" aria-live="polite">
         <div class="modal-content">
@@ -76,7 +94,9 @@
       <button type="button" id="clearChecked">Clear Checked Expenses</button>
     </div>
     <footer>
-      <div id="totalAmount"></div>
+      <div class="summary">
+        <h3>Total Expenses: <span id="totalAmount">0</span></h3>
+      </div>
       <button type="button" id="clearAll">Clear All</button>
     </footer>
 
