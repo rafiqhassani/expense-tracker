@@ -1,5 +1,9 @@
 📊 Expense Tracker Project
 
+## Live Demo
+
+https://rafiqhassani.github.io/expense-tracker/
+
 🚀 About the Project
 
 A web-based Expense Tracker Application that helps users manage daily and monthly expenses in an efficient and organized way.
