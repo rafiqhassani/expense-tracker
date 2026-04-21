@@ -26,7 +26,7 @@ body {
 }
 h2,
 h3 {
-  color: #1f2d26;
+  color: #111827;
   font-weight: 600;
 }
 
@@ -56,10 +56,10 @@ select {
   box-sizing: border-box;
   font-size: 14px;
   border-radius: 6px;
-  color: #1f2d26;
+  color: #1f2937;
 }
 option {
-  color: #1f2d26;
+  color: #1f2937;
   background-color: white;
 }
 
@@ -82,7 +82,7 @@ button:active {
 }
 
 label {
-  color: #3a7d5c;
+  color: #2f6b4f;
   text-align: left;
   font-weight: 600;
   transition: 0.2s ease;
@@ -109,19 +109,17 @@ input::placeholder {
   display: flex;
   align-items: center;
   padding: 10px 15px;
-
-  justify-content: center;
-  position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 input[type="checkbox"],
 button {
   flex-shrink: 0;
 }
 .info-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .info-container h3 {
@@ -134,10 +132,11 @@ button {
   display: flex;
   gap: 8px;
   justify-content: center;
+  padding: 8px;
 }
 .meta-info {
   font-size: 13px;
-  color: #666;
+  color: #4b5563;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -148,9 +147,9 @@ button {
   font-weight: bold;
 }
 .action-container {
-  position: absolute;
-  right: 15px;
+  width: 160px;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 8px;
 }
@@ -159,19 +158,25 @@ input[type="checkbox"] {
   width: 16px;
   height: 16px;
   margin: 0;
+  transform: scale(1.1);
+  cursor: pointer;
+  background-color: #fff;
 }
 .amount {
-  background-color: pink;
+  background-color: #fdf2f8;
   padding: 4px 8px;
   border-radius: 6px;
   white-space: nowrap;
+  font-weight: 500;
+  color: #333;
 }
 .expensive {
   background-color: rgba(255, 0, 0, 0.1);
   border-radius: 10px;
 }
 .expensive .amount {
-  font-weight: bold;
+  font-weight: 700;
+  color: #111;
 }
 
 .modal {
@@ -260,6 +265,11 @@ footer {
 @media (max-width: 600px) {
   .list-item {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 10px;
+  }
+  .action-container {
+    width: 100%;
+    justify-content: center;
   }
 }
