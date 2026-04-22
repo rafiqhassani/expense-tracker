@@ -140,33 +140,49 @@ function validateInputs() {
   return true;
 }
 let editingId = null;
-
 function handleAddUpdateBtn() {
-  if (!validateInputs()) return;
+  elements.modalMsg.textContent = "";
+
+  if (!validateInputs()) {
+    return;
+  }
+
   if (editingId === null) {
     handleAddExpense();
-  } else {
-    handleUpdateExpense();
+    showModal("Expense added!");
+    clearInputs();
+    return;
   }
+  const oldData = expenses.find((item) => item.id === editingId);
+  const newExpense = {
+    title: elements.titleInput.value,
+    amount: elements.amountInput.value,
+    category: elements.categoryInput.value,
+    date: elements.dateInput.value,
+  };
+  if (!isDataChanged(oldData, newExpense)) {
+    showModal("No changes made!");
+    return;
+  }
+  handleUpdateExpense();
+  showModal("Expense updated");
   clearInputs();
   editingId = null;
 }
 function handleAddExpense() {
-  const userInput = {
+  const newExpense = {
     title: elements.titleInput.value,
     amount: elements.amountInput.value,
     category: elements.categoryInput.value,
     date: elements.dateInput.value,
   };
 
-  const processedData = createExpense(userInput);
+  const processedData = createExpense(newExpense);
 
   expenses = addExpense(expenses, processedData);
   saveToLocalStorage("expenses", expenses);
 
   handleRenderExpenses();
-
-  showModal("Expense added!");
 }
 
 function handleDeleteExpense(id) {
@@ -200,19 +216,24 @@ function handleCheckboxChange(id, isChecked) {
 }
 function handleUpdateExpense() {
   if (editingId === null) return;
-  const userInput = {
+  const newExpense = {
     title: elements.titleInput.value,
     amount: elements.amountInput.value,
     category: elements.categoryInput.value,
     date: elements.dateInput.value,
   };
-  const processedData = createExpense(userInput, editingId, false);
+  const processedData = createExpense(newExpense, editingId, false);
   expenses = updateExpense(expenses, editingId, processedData);
   saveToLocalStorage("expenses", expenses);
   handleRenderExpenses();
-
-  editingId = null;
-  showModal("Expense updated!");
+}
+function isDataChanged(oldData, newData) {
+  return (
+    oldData.title !== newData.title ||
+    parseFloat(oldData.amount) !== parseFloat(newData.amount) ||
+    oldData.category !== newData.category ||
+    oldData.date !== newData.date
+  );
 }
 function handleSearchExpenses() {
   let titleSearch = elements.searchTitle.value.toLowerCase().trim();
