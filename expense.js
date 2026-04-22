@@ -55,14 +55,15 @@ export function updateExpense(expenses, editingId, newData) {
   );
 }
 
-export function searchExpenses(expenses, titleSearch, amountSearch) {
-  return expenses.filter((item) => {
-    const titleMatch = titleSearch
-      ? item.title.toLowerCase().includes(titleSearch.toLowerCase())
-      : true;
-    const amountMatch =
-      amountSearch !== "" ? item.amount === amountSearch : true;
-    return titleMatch && amountMatch;
+export function searchExpenses(expenses, searchExpense) {
+  const inputText = searchExpense.trim().toLowerCase();
+
+  return expenses.filter((expense) => {
+    return (
+      expense.title.toLowerCase().includes(inputText) ||
+      expense.amount.toString().includes(inputText) ||
+      expense.category.toLowerCase().includes(inputText)
+    );
   });
 }
 
@@ -78,9 +79,6 @@ export function sortExpenses(expenses, sortBy) {
     sorted.sort((a, b) => b.title.localeCompare(a.title));
   }
   return sorted;
-}
-export function selectCategories(expenses, selectedCategory) {
-  return expenses.filter((item) => item.category === selectedCategory);
 }
 
 export function clearCheckedButtons(expenses) {

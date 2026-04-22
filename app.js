@@ -6,7 +6,6 @@ import {
   totalCalculate,
   searchExpenses,
   sortExpenses,
-  selectCategories,
   checkboxChange,
   clearCheckedButtons,
   createExpense,
@@ -14,7 +13,7 @@ import {
   calculateByDate,
 } from "./expense.js";
 import { saveToLocalStorage, getFromLocalStorage } from "./storage.js";
-import { renderExpenses, clearAllExpenses } from "./ui.js";
+import { renderExpenses, clearAllExpenses, showMsgForFilter } from "./ui.js";
 let expenses = [];
 
 try {
@@ -32,14 +31,10 @@ const elements = {
   amountInput: document.getElementById("amount"),
   categoryInput: document.getElementById("category"),
   addBtn: document.getElementById("addBtn"),
-  categoryBtn: document.getElementById("categoryBtn"),
   dateInput: document.getElementById("dateInput"),
   container: document.getElementById("container"),
-  searchTitle: document.getElementById("searchExpenses"),
-  searchAmount: document.getElementById("searchAmount"),
-  searchBtn: document.getElementById("searchBtn"),
+  searchInput: document.getElementById("searchExpenses"),
   sortSelection: document.getElementById("sortSelection"),
-  categorySelection: document.getElementById("categorySelection"),
   filterByMonth: document.getElementById("filterByMonth"),
   monthlyTotal: document.getElementById("monthlyTotal"),
   totalAmount: document.getElementById("totalAmount"),
@@ -49,6 +44,7 @@ const elements = {
   closeModal: document.getElementById("closeModal"),
   clearChecked: document.getElementById("clearChecked"),
 };
+elements.searchInput.addEventListener("input", handleSearchExpenses);
 
 document.addEventListener("click", (e) => {
   if (e.target.closest("#addBtn")) {
@@ -91,9 +87,7 @@ document.addEventListener("change", (e) => {
   if (e.target === elements.sortSelection) {
     handleSortExpenses();
   }
-  if (e.target === elements.categorySelection) {
-    handleSelectCategories();
-  }
+
   if (e.target === elements.filterByMonth) {
     handleFilterByMonth();
   }
@@ -111,9 +105,17 @@ elements.container.addEventListener("change", (e) => {
 
 function handleRenderExpenses(data = expenses) {
   elements.container.textContent = "";
-
+  if (data.length === 0) {
+    const showMsg = showMsgForFilter(
+      `No expenses found for  "${elements.searchInput.value}"`,
+    );
+    elements.container.appendChild(showMsg);
+    handleTotalCalcule([]);
+    return;
+  }
   data.forEach((exp) => {
     const divElement = renderExpenses(exp);
+
     elements.container.appendChild(divElement);
   });
 
@@ -236,38 +238,16 @@ function isDataChanged(oldData, newData) {
   );
 }
 function handleSearchExpenses() {
-  let titleSearch = elements.searchTitle.value.toLowerCase().trim();
-  let amountSearch =
-    elements.searchAmount.value === ""
-      ? ""
-      : parseFloat(elements.searchAmount.value.trim());
+  const searchExpense = elements.searchInput.value;
+  const filtered = searchExpenses(expenses, searchExpense);
 
-  if (titleSearch === "" && amountSearch === "") {
-    handleRenderExpenses();
-    return;
-  }
-  let filteredExpenses = searchExpenses(expenses, titleSearch, amountSearch);
-  if (filteredExpenses.length === 0) {
-    elements.container.innerHTML = "<p>No resuts found</p>";
-  } else {
-    handleRenderExpenses(filteredExpenses);
-  }
+  handleRenderExpenses(filtered);
 }
 
 function handleSortExpenses() {
   const sortBy = elements.sortSelection.value;
   const sortedExpenses = sortExpenses(expenses, sortBy);
   handleRenderExpenses(sortedExpenses);
-}
-
-function handleSelectCategories() {
-  const selectedCategory = elements.categorySelection.value;
-
-  const filteredExpenses =
-    selectedCategory === "all"
-      ? expenses
-      : selectCategories(expenses, selectedCategory);
-  handleRenderExpenses(filteredExpenses);
 }
 
 function handleFilterByMonth() {

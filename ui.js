@@ -56,6 +56,12 @@ export function renderExpenses(expense) {
   div.appendChild(actionContainer);
   return div;
 }
+export function showMsgForFilter(message) {
+  const p = document.createElement("p");
+  p.classList.add("message-box");
+  p.textContent = message;
+  return p;
+}
 
 export function clearAllExpenses() {
   return [];
