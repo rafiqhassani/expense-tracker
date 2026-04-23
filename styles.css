@@ -186,7 +186,7 @@ input[type="checkbox"] {
   padding: 10px 16px;
   border-radius: 8px;
 }
-.hide {
+.message-box.hide {
   display: inline-block !important;
 }
 

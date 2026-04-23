@@ -105,7 +105,8 @@ elements.container.addEventListener("change", (e) => {
 
 function handleRenderExpenses(data = expenses) {
   elements.container.textContent = "";
-  if (data.length === 0) {
+  if (data.length === 0 && elements.searchInput.value !== "") {
+    elements.container.classList.remove("hide");
     const showMsg = showMsgForFilter(
       `No expenses found for  "${elements.searchInput.value}"`,
     );
