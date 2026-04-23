@@ -56,7 +56,7 @@ export function renderExpenses(expense) {
   div.appendChild(actionContainer);
   return div;
 }
-export function showMsgForFilter(message) {
+export function renderMsgForFilter(message) {
   const p = document.createElement("p");
   p.className = "message-box hide";
   p.textContent = message;

@@ -13,7 +13,7 @@ import {
   calculateByDate,
 } from "./expense.js";
 import { saveToLocalStorage, getFromLocalStorage } from "./storage.js";
-import { renderExpenses, clearAllExpenses, showMsgForFilter } from "./ui.js";
+import { renderExpenses, clearAllExpenses, renderMsgForFilter } from "./ui.js";
 let expenses = [];
 
 try {
@@ -107,7 +107,7 @@ function handleRenderExpenses(data = expenses) {
   elements.container.textContent = "";
   if (data.length === 0 && elements.searchInput.value !== "") {
     elements.container.classList.remove("hide");
-    const showMsg = showMsgForFilter(
+    const showMsg = renderMsgForFilter(
       `No expenses found for  "${elements.searchInput.value}"`,
     );
     elements.container.appendChild(showMsg);
