@@ -110,8 +110,6 @@ function handleRenderExpenses(data = expenses) {
       `No expenses found for  "${elements.searchInput.value}"`,
     );
     elements.container.appendChild(showMsg);
-    handleTotalCalcule([]);
-    return;
   }
   data.forEach((exp) => {
     const divElement = renderExpenses(exp);
@@ -242,6 +240,11 @@ function handleSearchExpenses() {
   const filtered = searchExpenses(expenses, searchExpense);
 
   handleRenderExpenses(filtered);
+  if (searchExpense !== "" && filtered.length === 0) {
+    elements.container.classList.add("hide");
+  } else {
+    elements.container.classList.remove("hide");
+  }
 }
 
 function handleSortExpenses() {

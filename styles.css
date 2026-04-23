@@ -180,12 +180,16 @@ input[type="checkbox"] {
   color: #333;
 }
 .message-box {
-  display: inline-block;
+  display: none;
   background-color: #1e293b;
   color: #fff;
   padding: 10px 16px;
   border-radius: 8px;
 }
+.hide {
+  display: inline-block !important;
+}
+
 .expensive {
   background-color: rgba(255, 0, 0, 0.1);
   border-radius: 10px;
