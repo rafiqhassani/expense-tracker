@@ -14,7 +14,7 @@ import {
 import { saveToLocalStorage, getFromLocalStorage } from "./storage.js";
 import { renderExpenses, clearAllExpenses, renderMsgForFilter } from "./ui.js";
 let expenses = [];
-let visibleCount = 20;
+let visibleCount = 40;
 try {
   const stored = getFromLocalStorage("expenses") || [];
   expenses = stored.map((item) => ({
@@ -46,16 +46,16 @@ const elements = {
 };
 elements.searchInput.addEventListener("input", handleSearchExpenses);
 elements.addBtn.addEventListener("click", handleAddOrUpdateExpense);
-document.addEventListener("click", (e) => {
-  if (e.target.closest("#searchBtn")) {
-    handleSearchExpenses();
-  }
-  if (e.target.closest("#closeModal")) {
-    elements.modalContainer.classList.remove("show");
-  }
+elements.closeModal.addEventListener("click", () => {
+  elements.modalContainer.classList.remove("show");
+});
+
+elements.modalContainer.addEventListener("click", (e) => {
   if (e.target === elements.modalContainer) {
     elements.modalContainer.classList.remove("show");
   }
+});
+document.addEventListener("click", (e) => {
   if (e.target.closest("#clearAll")) {
     expenses = clearAllExpenses();
     saveToLocalStorage("expenses", expenses);
@@ -86,7 +86,7 @@ elements.container.addEventListener("click", (e) => {
     handleEditExpense(id);
   }
   if (button.classList.contains("cancel-btn")) {
-    clearInputs();
+    resetForm();
   }
 });
 document.addEventListener("change", (e) => {
@@ -135,39 +135,96 @@ function handleRenderExpenses(data = expenses) {
 }
 function validateInputs() {
   const title = elements.titleInput.value.trim();
-  const amount = elements.amountInput.value.trim();
   const category = elements.categoryInput.value.trim();
-  const date = elements.dateInput.value.trim();
+  const date = elements.dateInput.value;
 
-  if (!title || !amount || !category || !date) {
+  const amountValue = elements.amountInput.value;
+  const amount = Number(amountValue);
+
+  if (!title || !category || !date || amountValue === "") {
     showModal("Please fill in all fields correctly!");
     return false;
   }
 
-  const amountNum = Number(amount);
-
-  if (!Number.isFinite(amountNum) || amountNum <= 0) {
+  if (!Number.isFinite(amount) || amount <= 0) {
     showModal("Amount must be a valid number!");
     return false;
   }
 
   return true;
 }
-let editingId = null;
+const state = {
+  mode: "add",
+  editingId: null,
+};
+
 function handleAddOrUpdateExpense() {
   if (!validateInputs()) return;
 
-  if (editingId === null) {
+  if (state.mode === "add") {
     handleAddExpense();
-    return;
+  } else if (state.mode === "edit") {
+    handleUpdateExpense();
   }
+}
+function handleAddExpense() {
+  const newExpense = {
+    title: elements.titleInput.value,
+    amount: elements.amountInput.value,
+    category: elements.categoryInput.value,
+    date: elements.dateInput.value,
+  };
 
-  const oldData = expenses.find((item) => item.id === editingId);
+  const processedData = createExpense(newExpense);
+
+  expenses = addExpense(expenses, processedData);
+  saveToLocalStorage("expenses", expenses);
+
+  handleRenderExpenses(getVisibleExpenses(expenses));
+
+  resetForm();
+  showModal("Expense added");
+}
+function handleDeleteExpense(id) {
+  expenses = deleteExpense(expenses, id);
+  saveToLocalStorage("expenses", expenses);
+  handleRenderExpenses(getVisibleExpenses(expenses));
+}
+function handleEditExpense(id) {
+  const item = editExpense(expenses, id);
+  if (!item) return;
+
+  state.mode = "edit";
+  state.editingId = id;
+
+  elements.titleInput.value = item.title || "";
+  elements.amountInput.value = item.amount || "";
+  elements.categoryInput.value = item.category || "";
+  elements.dateInput.value = item.date || "";
+}
+function resetForm() {
+  elements.titleInput.value = "";
+  elements.amountInput.value = "";
+  elements.categoryInput.value = "";
+  elements.dateInput.value = "";
+
+  state.mode = "add";
+  state.editingId = null;
+}
+
+function handleCheckboxChange(id, isChecked) {
+  expenses = checkboxChange(expenses, id, isChecked);
+  saveToLocalStorage("expenses", expenses);
+  handleRenderExpenses(getVisibleExpenses(expenses));
+}
+function handleUpdateExpense() {
+  if (!state.editingId) return;
+
+  const oldData = expenses.find((item) => item.id === state.editingId);
 
   if (!oldData) {
     showModal("Expense not found");
-    editingId = null;
-    clearInputs();
+    resetForm();
     return;
   }
 
@@ -183,74 +240,14 @@ function handleAddOrUpdateExpense() {
     return;
   }
 
-  handleUpdateExpense();
-  editingId = null;
-}
-function handleAddExpense() {
-  const newExpense = {
-    title: elements.titleInput.value,
-    amount: elements.amountInput.value,
-    category: elements.categoryInput.value,
-    date: elements.dateInput.value,
-  };
+  const processedData = createExpense(newExpense, state.editingId, false);
 
-  const processedData = createExpense(newExpense);
-
-  expenses = addExpense(expenses, processedData);
-  if (expenses.length > 500) {
-    expenses.shift();
-  }
-
+  expenses = updateExpense(expenses, state.editingId, processedData);
   saveToLocalStorage("expenses", expenses);
 
   handleRenderExpenses(getVisibleExpenses(expenses));
-  clearInputs();
-  showModal("Expense added");
-}
 
-function handleDeleteExpense(id) {
-  expenses = deleteExpense(expenses, id);
-  saveToLocalStorage("expenses", expenses);
-  handleRenderExpenses(getVisibleExpenses(expenses));
-}
-
-function handleEditExpense(id) {
-  editingId = id;
-
-  const item = editExpense(expenses, id);
-  if (!item) return;
-
-  elements.titleInput.value = item.title || "";
-  elements.amountInput.value = isNaN(item.amount) ? "" : item.amount;
-  elements.categoryInput.value = item.category || "";
-  elements.dateInput.value = item.date || "";
-}
-function clearInputs() {
-  elements.titleInput.value = "";
-  elements.amountInput.value = "";
-  elements.categoryInput.value = "";
-  elements.dateInput.value = "";
-}
-
-function handleCheckboxChange(id, isChecked) {
-  expenses = checkboxChange(expenses, id, isChecked);
-  saveToLocalStorage("expenses", expenses);
-  handleRenderExpenses(getVisibleExpenses(expenses));
-}
-function handleUpdateExpense() {
-  if (editingId === null) return;
-  const newExpense = {
-    title: elements.titleInput.value,
-    amount: elements.amountInput.value,
-    category: elements.categoryInput.value,
-    date: elements.dateInput.value,
-  };
-  const processedData = createExpense(newExpense, editingId, false);
-  expenses = updateExpense(expenses, editingId, processedData);
-  saveToLocalStorage("expenses", expenses);
-  handleRenderExpenses(getVisibleExpenses(expenses));
-  editingId = null;
-  clearInputs();
+  resetForm();
   showModal("Expense updated");
 }
 function isDataChanged(oldData, newData) {
@@ -293,12 +290,19 @@ function handleFilterByMonth() {
   handleRenderExpenses(getVisibleExpenses(filteredExpenses));
 }
 
+let modalTimeout = null;
+
 function showModal(message) {
-  elements.modalMsg.textContent = "";
   elements.modalMsg.textContent = message;
   elements.modalContainer.classList.add("show");
-  setTimeout(() => {
+
+  if (modalTimeout) {
+    clearTimeout(modalTimeout);
+  }
+
+  modalTimeout = setTimeout(() => {
     elements.modalContainer.classList.remove("show");
+    modalTimeout = null;
   }, 3000);
 }
 

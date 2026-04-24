@@ -1,23 +1,26 @@
 export function addExpense(expenses, newExpense) {
-  return [...expenses, newExpense];
+  const added = [...expenses, newExpense];
+  if (added.length > 500) {
+    added.shift();
+  }
+  return added;
 }
 export function createExpense(
   data,
   existingId = null,
   existingSelected = false,
 ) {
-  const parsedAmount = parseFloat(data.amount.trim());
+  const parsedAmount = Number(data.amount);
+
+  const isValidDate = data.date && !isNaN(Date.parse(data.date));
 
   return {
     id: existingId || crypto.randomUUID(),
     title: data.title.trim(),
-    amount: isNaN(parsedAmount) ? 0 : parsedAmount,
-    category: data.category.trim().toLowerCase(),
-    date:
-      data.date && !isNaN(new Date(data.date))
-        ? data.date
-        : new Date().toISOString().split("T")[0],
-    selected: existingSelected,
+    amount: Number.isFinite(parsedAmount) ? parsedAmount : 0,
+    category: data.category.trim(), 
+    date: isValidDate ? data.date : new Date().toISOString().split("T")[0],
+    selected: Boolean(existingSelected),
   };
 }
 export function filterByMonth(expenses, month) {
