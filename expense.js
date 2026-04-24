@@ -26,9 +26,6 @@ export function filterByMonth(expenses, month) {
     return d.getMonth() + 1 === month;
   });
 }
-export function calculateByDate(expenses) {
-  return expenses.reduce((sum, item) => sum + item.amount, 0);
-}
 
 export function deleteExpense(expenses, id) {
   return expenses.filter((item) => item.id !== id);
@@ -81,7 +78,7 @@ export function sortExpenses(expenses, sortBy) {
   return sorted;
 }
 
-export function clearCheckedButtons(expenses) {
+export function clearSelectedExpenses(expenses) {
   return expenses.filter((item) => !item.selected);
 }
 

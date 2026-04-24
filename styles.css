@@ -1,6 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
   background-color: #f5f7fb;
   font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
 }
 :root {
   --bg: #0f172a;
@@ -14,7 +21,7 @@ body {
 .main-container {
   margin: 0 auto;
   text-align: center;
-  padding: 0 16px;
+  padding: 0 1rem;
   line-height: 1.5;
   max-width: 700px;
   display: flex;
@@ -28,6 +35,9 @@ h2,
 h3 {
   color: #111827;
   font-weight: 600;
+}
+h2 {
+  padding-top: 15px;
 }
 
 .add-update {
@@ -115,10 +125,14 @@ input::placeholder {
 }
 
 .list-item {
+  margin: 0 auto;
+
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 15px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  gap: 12px;
 }
 input[type="checkbox"],
 button {
@@ -129,6 +143,8 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 4px;
+  min-width: 0;
 }
 
 .info-container h3 {
@@ -156,11 +172,14 @@ button {
   font-weight: bold;
 }
 .action-container {
+  flex: 1;
+  text-align: center;
   width: 160px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 8px;
+  margin-right: 1em;
 }
 input[type="checkbox"] {
   accent-color: #4caf50;
@@ -187,7 +206,7 @@ input[type="checkbox"] {
   border-radius: 8px;
 }
 .message-box.hide {
-  display: inline-block !important;
+  display: inline-block;
 }
 
 .expensive {
