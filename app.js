@@ -14,7 +14,7 @@ import {
 import { saveToLocalStorage, getFromLocalStorage } from "./storage.js";
 import { renderExpenses, clearAllExpenses, renderMsgForFilter } from "./ui.js";
 let expenses = [];
-
+let visibleCount = 20;
 try {
   const stored = getFromLocalStorage("expenses") || [];
   expenses = stored.map((item) => ({
@@ -32,6 +32,7 @@ const elements = {
   addBtn: document.getElementById("addBtn"),
   dateInput: document.getElementById("dateInput"),
   container: document.getElementById("container"),
+  loadMore: document.getElementById("loadMore"),
   searchInput: document.getElementById("searchExpenses"),
   sortSelection: document.getElementById("sortSelection"),
   filterMonthSelect: document.getElementById("filterByMonth"),
@@ -58,12 +59,20 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("#clearAll")) {
     expenses = clearAllExpenses();
     saveToLocalStorage("expenses", expenses);
-    handleRenderExpenses();
+    handleRenderExpenses(getVisibleExpenses(expenses));
+  }
+  if (e.target.closest("#loadMore")) {
+    if (visibleCount >= expenses.length) {
+      elements.loadMore.style.display = "none";
+    } else {
+      elements.loadMore.style.display = "block";
+    }
+    loadMoreExpenses();
   }
   if (e.target.closest("#clearChecked")) {
     expenses = clearSelectedExpenses(expenses);
     saveToLocalStorage("expenses", expenses);
-    handleRenderExpenses();
+    handleRenderExpenses(getVisibleExpenses(expenses));
   }
 });
 elements.container.addEventListener("click", (e) => {
@@ -99,7 +108,14 @@ elements.container.addEventListener("change", (e) => {
     handleCheckboxChange(id, isChecked);
   }
 });
+function getVisibleExpenses(expenses) {
+  return expenses.slice().reverse().slice(0, visibleCount);
+}
 
+function loadMoreExpenses() {
+  visibleCount += 20;
+  handleRenderExpenses(getVisibleExpenses(expenses));
+}
 function handleRenderExpenses(data = expenses) {
   elements.container.textContent = "";
   if (data.length === 0 && elements.searchInput.value !== "") {
@@ -181,9 +197,13 @@ function handleAddExpense() {
   const processedData = createExpense(newExpense);
 
   expenses = addExpense(expenses, processedData);
+  if (expenses.length > 500) {
+    expenses.shift();
+  }
+
   saveToLocalStorage("expenses", expenses);
 
-  handleRenderExpenses();
+  handleRenderExpenses(getVisibleExpenses(expenses));
   clearInputs();
   showModal("Expense added");
 }
@@ -191,7 +211,7 @@ function handleAddExpense() {
 function handleDeleteExpense(id) {
   expenses = deleteExpense(expenses, id);
   saveToLocalStorage("expenses", expenses);
-  handleRenderExpenses();
+  handleRenderExpenses(getVisibleExpenses(expenses));
 }
 
 function handleEditExpense(id) {
@@ -215,7 +235,7 @@ function clearInputs() {
 function handleCheckboxChange(id, isChecked) {
   expenses = checkboxChange(expenses, id, isChecked);
   saveToLocalStorage("expenses", expenses);
-  handleRenderExpenses();
+  handleRenderExpenses(getVisibleExpenses(expenses));
 }
 function handleUpdateExpense() {
   if (editingId === null) return;
@@ -228,7 +248,7 @@ function handleUpdateExpense() {
   const processedData = createExpense(newExpense, editingId, false);
   expenses = updateExpense(expenses, editingId, processedData);
   saveToLocalStorage("expenses", expenses);
-  handleRenderExpenses();
+  handleRenderExpenses(getVisibleExpenses(expenses));
   editingId = null;
   clearInputs();
   showModal("Expense updated");
@@ -245,7 +265,7 @@ function handleSearchExpenses() {
   const searchExpense = elements.searchInput.value;
   const filtered = searchExpenses(expenses, searchExpense);
 
-  handleRenderExpenses(filtered);
+  handleRenderExpenses(getVisibleExpenses(filtered));
   if (searchExpense !== "" && filtered.length === 0) {
     elements.container.classList.add("hide");
   } else {
@@ -256,7 +276,7 @@ function handleSearchExpenses() {
 function handleSortExpenses() {
   const sortBy = elements.sortSelection.value;
   const sortedExpenses = sortExpenses(expenses, sortBy);
-  handleRenderExpenses(sortedExpenses);
+  handleRenderExpenses(getVisibleExpenses(sortedExpenses));
 }
 
 function handleFilterByMonth() {
@@ -270,7 +290,7 @@ function handleFilterByMonth() {
     0,
   );
   elements.monthlyTotal.textContent = totalByMonth;
-  handleRenderExpenses(filteredExpenses);
+  handleRenderExpenses(getVisibleExpenses(filteredExpenses));
 }
 
 function showModal(message) {
@@ -287,4 +307,4 @@ function handleTotalCalculate(data = expenses) {
   elements.totalAmount.textContent = total;
 }
 
-handleRenderExpenses();
+handleRenderExpenses(getVisibleExpenses(expenses));
