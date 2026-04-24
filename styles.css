@@ -82,6 +82,7 @@ button {
   transition: 0.2s ease;
   background-color: #3a7d5c;
   color: white;
+  touch-action: manipulation;
 }
 button:hover {
   background-color: #2f6f4e;
@@ -174,7 +175,7 @@ button {
 .action-container {
   flex: 1;
   text-align: center;
-  width: 160px;
+  width: auto;
   display: flex;
   justify-content: flex-end;
   align-items: center;

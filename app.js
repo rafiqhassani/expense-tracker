@@ -68,7 +68,7 @@ document.addEventListener("click", (e) => {
 });
 elements.container.addEventListener("click", (e) => {
   const button = e.target.closest("button");
-  if (!button) return;
+  if (!button || !elements.container.contains(button)) return;
   const id = button.dataset.id;
   if (button.classList.contains("delete-btn")) {
     handleDeleteExpense(id);
