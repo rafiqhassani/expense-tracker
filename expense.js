@@ -18,7 +18,7 @@ export function createExpense(
     id: existingId || crypto.randomUUID(),
     title: data.title.trim(),
     amount: Number.isFinite(parsedAmount) ? parsedAmount : 0,
-    category: data.category.trim(), 
+    category: data.category.trim().toLowerCase(),
     date: isValidDate ? data.date : new Date().toISOString().split("T")[0],
     selected: Boolean(existingSelected),
   };

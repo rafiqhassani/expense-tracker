@@ -253,7 +253,7 @@ function handleUpdateExpense() {
 function isDataChanged(oldData, newData) {
   return (
     oldData.title !== newData.title ||
-    parseFloat(oldData.amount) !== parseFloat(newData.amount) ||
+    Number(oldData.amount) !== Number(newData.amount) ||
     oldData.category !== newData.category ||
     oldData.date !== newData.date
   );
@@ -301,6 +301,7 @@ function showModal(message) {
   }
 
   modalTimeout = setTimeout(() => {
+    elements.modalMsg.textContent = "";
     elements.modalContainer.classList.remove("show");
     modalTimeout = null;
   }, 3000);
