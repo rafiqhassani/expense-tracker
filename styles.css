@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   background-color: #f5f7fb;
   font-family: "Inter", sans-serif;
@@ -10,6 +11,7 @@ body {
   padding: 0;
   overflow-x: hidden;
 }
+
 :root {
   --bg: #0f172a;
   --card: #1e293b;
@@ -19,6 +21,7 @@ body {
   --danger: #ef4444;
   --radius: 12px;
 }
+
 .main-container {
   margin: 0 auto;
   text-align: center;
@@ -32,22 +35,34 @@ body {
   gap: 16px;
   background-color: #ffffff;
   min-height: 100vh;
+  border-radius: 10px;
 }
+
 h2,
 h3 {
   color: #111827;
   font-weight: 600;
 }
+
 h2 {
   padding-top: 15px;
+  text-align: center;
 }
 
 .add-update {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   width: 100%;
+  gap: 16px;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+}
+
 .filter {
   display: flex;
   flex-direction: column;
@@ -55,6 +70,7 @@ h2 {
   width: 100%;
   flex-wrap: wrap;
 }
+
 section {
   padding: 16px;
   border-radius: 10px;
@@ -70,10 +86,12 @@ select {
   border-radius: 6px;
   color: #1f2937;
 }
+
 option {
   color: #1f2937;
   background-color: white;
 }
+
 button,
 input {
   position: relative;
@@ -91,34 +109,38 @@ button {
   color: white;
   touch-action: manipulation;
 }
+
 button:hover {
   background-color: #2f6f4e;
   transform: translateY((-1px));
 }
+
 button:active {
   transform: scale(0.98);
 }
-#clearChecked {
-  margin-bottom: 8px;
-}
+
 label {
   color: #2f6b4f;
   text-align: left;
   font-weight: 600;
   transition: 0.2s ease;
 }
+
 label:hover {
   color: #2f644e;
 }
+
 input::placeholder {
   color: #9aa7a1;
 }
+
 .summary {
   padding: 12px;
   font-size: 1.1rem;
 }
+
 .monthly-summary {
-  margin: -20px auto;
+  margin: -20px auto 10px;
 }
 
 .delete-btn,
@@ -128,15 +150,33 @@ input::placeholder {
   padding: 6px 10px;
   gap: 6px;
 }
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+#loadMore {
+  transform: translate(-10px);
+  margin-bottom: 10px;
+}
+
+#clearChecked {
+  transform: translate(10px);
+  margin-bottom: 10px;
+}
+
 .list-container {
   width: 100%;
   max-height: 400px;
   overflow-y: auto;
+  margin-top: 10px;
 }
 
 .list-item {
   margin: 0 auto;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -144,10 +184,12 @@ input::placeholder {
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   gap: 12px;
 }
+
 input[type="checkbox"],
 button {
   flex-shrink: 0;
 }
+
 .info-container {
   flex: 1;
   display: flex;
@@ -162,6 +204,7 @@ button {
   font-size: 16px;
   font-weight: 600;
 }
+
 .info-container p {
   margin: 0;
   display: flex;
@@ -169,6 +212,7 @@ button {
   justify-content: center;
   padding: 8px;
 }
+
 .meta-info {
   font-size: 13px;
   color: #4b5563;
@@ -176,11 +220,13 @@ button {
   align-items: center;
   gap: 6px;
 }
+
 .meta-info .dot {
   font-size: 14px;
   opacity: 0.6;
   font-weight: bold;
 }
+
 .action-container {
   flex: 1;
   text-align: center;
@@ -191,6 +237,7 @@ button {
   gap: 8px;
   margin-right: 1em;
 }
+
 input[type="checkbox"] {
   accent-color: #4caf50;
   width: 16px;
@@ -200,6 +247,7 @@ input[type="checkbox"] {
   cursor: pointer;
   background-color: #fff;
 }
+
 .amount {
   background-color: #fdf2f8;
   padding: 4px 8px;
@@ -208,6 +256,7 @@ input[type="checkbox"] {
   font-weight: 500;
   color: #333;
 }
+
 .message-box {
   display: none;
   background-color: #1e293b;
@@ -215,7 +264,8 @@ input[type="checkbox"] {
   padding: 10px 16px;
   border-radius: 8px;
 }
-.message-box.hide {
+
+.message-box.message {
   display: inline-block;
 }
 
@@ -223,6 +273,7 @@ input[type="checkbox"] {
   background-color: rgba(255, 0, 0, 0.1);
   border-radius: 10px;
 }
+
 .expensive .amount {
   font-weight: 700;
   color: #111;
@@ -235,29 +286,45 @@ input[type="checkbox"] {
 .modal.show {
   display: block;
 }
+
+#modalContainer {
+  color: white;
+}
+
+#modalContainer.error {
+  background-color: var(--danger);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+#modalContainer.success {
+  background-color: green;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
 .modal-content {
-  background: var(--card);
-  color: var(--text);
   padding: 14px 16px;
   border-radius: var(--radius);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  min-width: 260px;
   max-width: 420px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  min-width: 260px;
 }
+
 .modal-content p {
   margin: 0;
   flex: 1;
   font-size: 14px;
-  color: var(--text);
+  color: #fff;
   word-break: break-word;
 }
-.modal-content button {
-  width: 28px;
-  height: 28px;
+
+.modal button {
+  width: 30px;
+  height: 30px;
   padding: 0;
   display: flex;
   align-items: center;
@@ -266,51 +333,34 @@ input[type="checkbox"] {
   font-size: 14px;
   font-weight: bold;
   border-radius: var(--radius);
-  border: 1px solid var(--danger);
-  background: transparent;
-  color: var(--danger);
   cursor: pointer;
   flex-shrink: 0;
   transition: 0.2s ease;
 }
-.modal-content button:hover {
-  background: var(--danger);
-  color: var(--text);
-}
+
 .close {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  line-height: 1;
-  font-size: 16px;
-  font-weight: bold;
-  border: 1px solid var(--danger);
-  border-radius: var(--radius);
-  background: transparent;
-  color: var(--danger);
-  cursor: pointer;
-  transition: 0.2s ease;
+  color: inherit;
+  border: 1px solid currentColor;
 }
+
 .close:hover {
   background: var(--danger);
   color: var(--text);
 }
 
-footer {
+.total-summary {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  padding: 16px 20px;
-  border-top: 1px solid #eee;
+  gap: 12px;
 }
+
 #total {
   font-size: 18px;
   font-weight: bold;
   text-align: left;
 }
+
 @media (max-width: 600px) {
   .list-item {
     flex-direction: column;
@@ -320,5 +370,13 @@ footer {
   .action-container {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .total-summary {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
   }
 }

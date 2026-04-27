@@ -1,10 +1,10 @@
-📊 Expense Tracker Project
+# Expense Tracker Project
 
 ## Live Demo
 
 https://rafiqhassani.github.io/expense-tracker/
 
-🚀 About the Project
+## About the Project
 
 A web-based Expense Tracker Application that helps users manage daily and monthly expenses in an efficient and organized way.
 
@@ -12,42 +12,48 @@ Users can add, edit, delete, search, sort, and filter expenses, with real-time t
 
 This project was built through hands-on learning and problem-solving practice, focusing on understanding core JavaScript concepts and real-world application logic.
 
-✨ Features
-➕ Add, edit, and delete expenses
-🔍 Search expenses by title or amount
-🔃 Sort expenses (alphabetical & numeric)
-📅 Filter expenses by month
-🏷️ Category-based management
-📊 Real-time total calculation
-✅ Form validation (prevents invalid inputs)
-💾 LocalStorage persistence
-⚡ Dynamic UI updates
-☑️ Bulk selection & removal
-🛠️ Tech Stack
-HTML5
-CSS3
-JavaScript (Vanilla JS)
-📸 Screenshots
+## Features
 
-Add screenshots here (UI, add expense, filter, etc.)
+- [x] Add, edit, and delete expenses
+- [x] Auto-remove expenses above 500
+- [x] Load More pagination (40 items per batch)
+- [x] Search expenses by title, amount, and category
+- [x] Sort expenses (alphabetical & numeric)
+- [x] Filter expenses by month
+- [x] Category-based management
+- [x] Real-time total calculation
+- [x] Form validation (prevents invalid inputs)
+- [x] LocalStorage persistence
+- [x] Dynamic UI updates
+- [x] Bulk selection & removal
 
-📌 Project Status
+## Technologies Used
+
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
+
+## Project Status
 
 Core functionality is complete.
 UI improvements and advanced features are currently in progress.
 
-📚 What I Learned
+## What I Learned
+
 Deep understanding of JavaScript logic and DOM manipulation
 State management without frameworks
 Debugging using DevTools, console logs, and breakpoints
 Handling real-world application structure
 Improving problem-solving through project-based learning
-📈 Future Improvements
+
+## Future Improvements
+
 Better UI/UX redesign
 Charts for expense analytics
 Category-wise spending breakdown
 Export to CSV/PDF
 Dark mode support
-🧠 Note
+
+## Note
 
 This project was built through consistent practice and self-learning over ~1.5–2 months, focusing on understanding rather than copying code.

@@ -11,80 +11,89 @@
     />
   </head>
   <body>
-    <div class="main-container">
-      <h2>Expense Tracker</h2>
-      <section class="add-update">
-        <label for="title">Title</label>
-        <input type="text" id="title" placeholder="Add Expense" />
-        <label for="amount">Amount</label>
-        <input type="number" id="amount" placeholder="e.g. 100.00" />
-        <label for="category">Category</label>
-        <input
-          type="text"
-          id="category"
-          class="category-input"
-          placeholder="Add category"
-        />
-        <label for="dateInput">Date</label>
-        <input type="date" id="dateInput" />
-        <button type="button" id="addBtn">Add/Update</button>
-      </section>
-      <section class="filter">
-        <label for="searchExpenses"
-          >Search Expenses (title, amount, category)</label
-        >
-        <input
-          type="text"
-          id="searchExpenses"
-          placeholder="Search by title, amount, or category..."
-        />
-        <label for="filterByMonth">Filter by month</label>
-        <select id="filterByMonth">
-          <option value="all">All Months</option>
-          <option value="1">January</option>
-          <option value="2">February</option>
-          <option value="3">March</option>
-          <option value="4">April</option>
-          <option value="5">May</option>
-          <option value="6">June</option>
-          <option value="7">July</option>
-          <option value="8">August</option>
-          <option value="9">September</option>
-          <option value="10">October</option>
-          <option value="11">November</option>
-          <option value="12">December</option>
-        </select>
-        <label for="sortSelection">Sort by </label>
-        <select id="sortSelection">
-          <option value="smallest">Amount: Smallest &#8594; Largest</option>
-          <option value="largest">Amount: Largest &#8594; Smallest</option>
-          <option value="title-ascending">Title: A &#8594; Z</option>
-          <option value="title-descending">Title: Z &#8594; A</option>
-        </select>
-      </section>
-      <div class="summary monthly-summary">
-        <h3>Monthly Total: <span id="monthlyTotal">0</span></h3>
-      </div>
+    <main>
+      <div class="main-container">
+        <h2>Expense Tracker</h2>
+        <section class="add-update">
+          <form id="expenseForm">
+            <label for="title">Title</label>
+            <input type="text" id="title" placeholder="Add Expense" />
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" placeholder="e.g. 100.00" />
+            <label for="category">Category</label>
+            <input
+              type="text"
+              id="category"
+              class="category-input"
+              placeholder="Add category"
+            />
+            <label for="dateInput">Date</label>
+            <input type="date" id="dateInput" />
+            <button type="submit">Add/Update</button>
+          </form>
+        </section>
 
-      <div id="modalContainer" class="modal" role="dialog" aria-live="polite">
-        <div class="modal-content">
-          <p id="modalMsg" class="message-text"></p>
-          <button type="button" id="closeModal" class="close">X</button>
+        <section class="filter">
+          <label for="searchExpenses"
+            >Search Expenses (title, amount, category)</label
+          >
+          <input
+            type="text"
+            id="searchExpenses"
+            placeholder="Search by title, amount, or category..."
+          />
+          <label for="filterByMonth">Filter by month</label>
+          <select id="filterByMonth">
+            <option value="all">All Months</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+          <label for="sortSelection">Sort by </label>
+          <select id="sortSelection">
+            <option value="smallest">Amount: Smallest &#8594; Largest</option>
+            <option value="largest">Amount: Largest &#8594; Smallest</option>
+            <option value="title-ascending">Title: A &#8594; Z</option>
+            <option value="title-descending">Title: Z &#8594; A</option>
+          </select>
+        </section>
+
+        <div class="summary monthly-summary">
+          <h3>Monthly Total: <span id="monthlyTotal">0</span></h3>
+        </div>
+
+        <div id="modalContainer" class="modal" role="dialog" aria-live="polite">
+          <div class="modal-content">
+            <p id="modalMsg" class="message-text"></p>
+            <button type="button" id="closeModal" class="close">X</button>
+          </div>
+        </div>
+
+        <section id="container" class="list-container"></section>
+
+        <div class="button-container">
+          <button type="button" id="loadMore">Load More Expenses</button>
+          <button type="button" id="clearChecked">
+            Clear Selected Expenses
+          </button>
         </div>
       </div>
-
-      <section id="container" class="list-container"></section>
-      <button type="button" id="loadMore">Load More</button>
-
-      <button type="button" id="clearChecked">Clear Selected Expenses</button>
-    </div>
+    </main>
     <footer>
       <div class="summary total-summary">
         <h3>Total Expenses: <span id="totalAmount">0</span></h3>
+        <button type="button" id="clearAll">Clear All</button>
       </div>
-      <button type="button" id="clearAll">Clear All</button>
     </footer>
-
-    <script type="module" src="app.js"></script>
+    <script type="module" src="./app.js"></script>
   </body>
 </html>

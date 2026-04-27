@@ -1,28 +1,25 @@
 export function addExpense(expenses, newExpense) {
   const added = [...expenses, newExpense];
-  if (added.length > 500) {
-    added.shift();
-  }
-  return added;
+  return added.slice(-500);
 }
+
 export function createExpense(
   data,
   existingId = null,
   existingSelected = false,
 ) {
   const parsedAmount = Number(data.amount);
-
   const isValidDate = data.date && !isNaN(Date.parse(data.date));
-
   return {
     id: existingId || crypto.randomUUID(),
-    title: data.title.trim(),
+    title: data.title,
     amount: Number.isFinite(parsedAmount) ? parsedAmount : 0,
-    category: data.category.trim().toLowerCase(),
+    category: data.category.toLowerCase(),
     date: isValidDate ? data.date : new Date().toISOString().split("T")[0],
     selected: Boolean(existingSelected),
   };
 }
+
 export function filterByMonth(expenses, month) {
   return expenses.filter((item) => {
     const d = new Date(item.date);
@@ -46,12 +43,7 @@ export function checkboxChange(expenses, id, isChecked) {
 
 export function updateExpense(expenses, editingId, newData) {
   return expenses.map((item) =>
-    item.id === editingId
-      ? {
-          ...item,
-          ...newData,
-        }
-      : item,
+    item.id === editingId ? { ...item, ...newData } : item,
   );
 }
 
@@ -70,13 +62,13 @@ export function searchExpenses(expenses, searchExpense) {
 export function sortExpenses(expenses, sortBy) {
   const sorted = [...expenses];
   if (sortBy === "smallest") {
-    sorted.sort((a, b) => a.amount - b.amount);
-  } else if (sortBy === "largest") {
     sorted.sort((a, b) => b.amount - a.amount);
+  } else if (sortBy === "largest") {
+    sorted.sort((a, b) => a.amount - b.amount);
   } else if (sortBy === "title-ascending") {
-    sorted.sort((a, b) => a.title.localeCompare(b.title));
-  } else if (sortBy === "title-descending") {
     sorted.sort((a, b) => b.title.localeCompare(a.title));
+  } else if (sortBy === "title-descending") {
+    sorted.sort((a, b) => a.title.localeCompare(b.title));
   }
   return sorted;
 }
