@@ -193,6 +193,7 @@ input::placeholder {
   padding: 10px 12px;
   box-sizing: border-box;
   min-height: 48px;
+  overflow: hidden;
 }
 
 .list-item:hover {
@@ -216,8 +217,8 @@ input::placeholder {
 .action-container {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .meta-info {
@@ -243,8 +244,10 @@ input::placeholder {
 .action-right {
   display: flex;
   align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
+  gap: 8px;
+  min-width: 0;
+  flex-wrap: wrap;
+  flex-shrink: 1;
 }
 
 .action-right button {
@@ -252,14 +255,11 @@ input::placeholder {
   font-size: 13px;
 }
 
-.action-right input[type="checkbox"] {
-  margin-left: 4px;
+.action-right * {
+  flex-shrink: 1;
 }
-
-.action-right button,
-.action-right input[type="checkbox"] {
-  flex-shrink: 0;
-  white-space: nowrap;
+.action-right button {
+  max-width: 100%;
 }
 
 input[type="checkbox"] {
