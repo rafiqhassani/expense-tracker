@@ -7,8 +7,6 @@
 body {
   background-color: #f5f7fb;
   font-family: "Inter", sans-serif;
-  margin: 0;
-  padding: 0;
   overflow-x: hidden;
 }
 
@@ -79,12 +77,32 @@ section {
 input,
 select {
   width: 100%;
-  padding: 10px;
   height: 40px;
   box-sizing: border-box;
   font-size: 14px;
-  border-radius: 6px;
   color: #1f2937;
+  font: inherit;
+  border: 1px solid transparent;
+  outline: none;
+}
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: blue;
+}
+
+input,
+select,
+button {
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 6px;
 }
 
 option {
@@ -99,15 +117,15 @@ input {
 }
 
 button {
-  padding: 10px;
   height: 40px;
-  border: none;
-  border-radius: 6px;
+  border: 1px solid transparent;
   cursor: pointer;
   transition: 0.2s ease;
   background-color: #3a7d5c;
   color: white;
   touch-action: manipulation;
+  font: inherit;
+  outline: none;
 }
 
 button:hover {
@@ -153,19 +171,21 @@ input::placeholder {
 
 .button-container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 20px;
+
+  width: 100%;
+  gap: 5px;
+  padding: 0 12px 5px;
+  box-sizing: border-box;
 }
 
 #loadMore {
-  transform: translate(-10px);
-  margin-bottom: 10px;
+  flex-shrink: 0;
 }
-
 #clearChecked {
-  transform: translate(10px);
-  margin-bottom: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .list-container {
@@ -228,14 +248,11 @@ button {
 }
 
 .action-container {
-  flex: 1;
-  text-align: center;
-  width: auto;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  gap: 8px;
-  margin-right: 1em;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 input[type="checkbox"] {
@@ -378,5 +395,15 @@ input[type="checkbox"] {
     flex-direction: column;
     align-items: center;
     gap: 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  .button-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .action-container button {
+    width: 100%;
   }
 }
