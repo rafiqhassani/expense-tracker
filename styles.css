@@ -415,3 +415,18 @@ input[type="checkbox"] {
     box-sizing: border-box;
   }
 }
+
+@media (max-width: 360px) {
+  .list-item {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-container,
+  .action-container {
+    width: 100%;
+  }
+  .action-container {
+    justify-content: space-between;
+  }
+}
