@@ -175,7 +175,7 @@ input::placeholder {
 
   width: 100%;
   gap: 5px;
-  padding: 0 12px 5px;
+  padding: 0 12px 10px;
   box-sizing: border-box;
 }
 
@@ -402,8 +402,11 @@ input[type="checkbox"] {
   .button-container {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
   }
-  .action-container button {
+  .button-container button {
     width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
   }
 }
