@@ -13,11 +13,13 @@ export function renderExpenses(expense) {
   metaElements.classList.add("meta-info");
   const categorySpan = document.createElement("span");
   categorySpan.textContent = expense.category;
+  categorySpan.classList.add("category");
   const dotSpan = document.createElement("span");
   dotSpan.textContent = " . ";
   dotSpan.classList.add("dot");
   const dateSpan = document.createElement("span");
   dateSpan.textContent = new Date(expense.date).toLocaleDateString("en-GB");
+  dateSpan.classList.add("date");
 
   metaElements.appendChild(categorySpan);
   metaElements.appendChild(dotSpan);
@@ -28,6 +30,9 @@ export function renderExpenses(expense) {
   const amount = document.createElement("span");
   amount.textContent = `Rs ${expense.amount}`;
   amount.classList.add("amount");
+
+  const actionRight = document.createElement("div");
+  actionRight.classList.add("action-right");
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "X";
   deleteBtn.classList.add("delete-btn");
@@ -47,11 +52,14 @@ export function renderExpenses(expense) {
   checkbox.checked = expense.selected || false;
   infoContainer.appendChild(h3);
   infoContainer.appendChild(metaElements);
+
   actionContainer.appendChild(amount);
-  actionContainer.appendChild(deleteBtn);
-  actionContainer.appendChild(editBtn);
-  actionContainer.appendChild(cancelBtn);
-  actionContainer.appendChild(checkbox);
+  actionRight.appendChild(deleteBtn);
+  actionRight.appendChild(editBtn);
+  actionRight.appendChild(cancelBtn);
+  actionRight.appendChild(checkbox);
+  actionContainer.appendChild(actionRight);
+
   div.appendChild(infoContainer);
   div.appendChild(actionContainer);
   return div;

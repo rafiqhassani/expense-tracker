@@ -161,14 +161,6 @@ input::placeholder {
   margin: -20px auto 10px;
 }
 
-.delete-btn,
-.edit-btn,
-.cancel-btn {
-  width: auto;
-  padding: 6px 10px;
-  gap: 6px;
-}
-
 .button-container {
   display: flex;
   align-items: center;
@@ -189,74 +181,85 @@ input::placeholder {
 
 .list-container {
   width: 100%;
-  max-height: 400px;
-  overflow-y: auto;
-  margin-top: 10px;
 }
 
 .list-item {
-  margin: 0 auto;
   display: flex;
   align-items: center;
-  flex-direction: row;
   justify-content: space-between;
-  flex-wrap: nowrap;
-  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  gap: 10px;
+  padding: 10px 12px;
   box-sizing: border-box;
-  overflow: hidden;
-  padding: 10px 15px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  gap: 12px;
+  min-height: 48px;
 }
 
-input[type="checkbox"],
-button {
-  flex-shrink: 0;
+.list-item:hover {
+  border-bottom: 2px solid rgba(255, 0, 0, 0.3);
 }
 
 .info-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  gap: 2px;
   min-width: 0;
 }
 
 .info-container h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.info-container p {
-  margin: 0;
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  padding: 8px;
-}
-
-.meta-info {
-  font-size: 13px;
-  color: #4b5563;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.meta-info .dot {
-  font-size: 14px;
-  opacity: 0.6;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #111827;
 }
 
 .action-container {
   display: flex;
   align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.meta-info {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.category {
+  color: #374151;
+  font-weight: 500;
+}
+
+.dot {
+  color: #d1d5db;
+  margin: 0 6px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.date {
+  color: #9ca3af;
+}
+
+.action-right {
+  display: flex;
+  align-items: center;
   gap: 6px;
-  flex-shrink: 1;
-  min-width: 0;
+  flex-shrink: 0;
+}
+
+.action-right button {
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+.action-right input[type="checkbox"] {
+  margin-left: 4px;
+}
+
+.action-right button,
+.action-right input[type="checkbox"] {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 input[type="checkbox"] {
@@ -291,8 +294,7 @@ input[type="checkbox"] {
 }
 
 .expensive {
-  background-color: rgba(255, 0, 0, 0.1);
-  border-radius: 10px;
+  background-color: rgba(239, 68, 68, 0.08);
 }
 
 .expensive .amount {
@@ -428,5 +430,11 @@ input[type="checkbox"] {
   }
   .action-container {
     justify-content: space-between;
+  }
+}
+
+@media (min-width: 1000px) {
+  .list-item {
+    border-bottom: 2px solid rgba(255, 0, 0, 0.1);
   }
 }
