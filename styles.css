@@ -244,7 +244,7 @@ input::placeholder {
 .action-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
   flex-wrap: wrap;
   flex-shrink: 1;
@@ -421,15 +421,42 @@ input[type="checkbox"] {
 @media (max-width: 360px) {
   .list-item {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     gap: 8px;
+    overflow: hidden;
   }
-  .info-container,
+
+  .info-container {
+    width: 100%;
+    align-items: flex-start;
+  }
+
   .action-container {
     width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
   }
-  .action-container {
+
+  .action-right {
+    width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .action-right button {
+    flex: 1 1 45%;
+    min-width: 0;
+  }
+
+  .select-expense {
+    flex: 0 0 auto;
+  }
+
+  .amount {
+    align-self: flex-start;
+    width: fit-content;
   }
 }
 
